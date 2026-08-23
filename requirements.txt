@@ -1,0 +1,31 @@
+# Benchmark multi-SLM local — dépendances vérifiées sur Python 3.12.7 / Windows.
+#
+# litellm doit être installé depuis un wheel : à partir de la 1.93 sa sdist exige
+# une chaîne de compilation Rust absente de la machine.
+#   pip install --only-binary=:all: litellm
+
+mlflow>=3.14
+openai>=2.0
+litellm>=1.91,<1.93
+
+docling>=2.115          # extraction PDF/DOCX
+py3langid>=0.3          # détection de langue (plus robuste que langdetect ici)
+tiktoken>=0.13          # estimation du budget de tokens
+pydantic>=2.13          # schéma d'extraction
+
+pandas>=2.3
+requests>=2.34
+psutil>=7.0
+tabulate>=0.10
+
+# Pipeline "metrics" (evaluation/legacy_metrics.py, mlflow.evaluate() — voir CLAUDE.md
+# Journal 2026-08-10) : ari_grade_level/flesch_kincaid_grade_level en dépendent.
+textstat>=0.7
+
+# Rendu PDF des rapports. Le moteur d'impression est Edge/Chrome en headless,
+# déjà présent sur la machine : seuls le parseur Markdown et le rastériseur
+# d'aperçus sont à installer.
+markdown-it-py>=3.0
+pypdfium2>=4.30
+pillow>=11.0
+python-dotenv>=1.2

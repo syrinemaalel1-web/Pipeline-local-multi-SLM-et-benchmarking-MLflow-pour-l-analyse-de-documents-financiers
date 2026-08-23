@@ -1,0 +1,11 @@
+# API FastAPI de pilotage du pipeline (api/) — voir api/main.py.
+# Séparé de requirements.txt : ce n'est pas le pipeline benchmark lui-même,
+# juste une couche de pilotage optionnelle par-dessus.
+#
+# fastapi/uvicorn sont déjà présents dans ce venv (dépendance transitive de
+# mlflow, qui embarque son propre serveur REST) — ce fichier documente la
+# dépendance explicitement pour un venv qui ne les aurait pas.
+
+fastapi>=0.110
+uvicorn[standard]>=0.29
+python-multipart>=0.0.9

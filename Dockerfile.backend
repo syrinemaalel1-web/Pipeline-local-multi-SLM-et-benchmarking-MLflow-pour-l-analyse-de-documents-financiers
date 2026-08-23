@@ -1,0 +1,32 @@
+# Backend : pipeline + API FastAPI. Ollama reste hors conteneur, sur l'hôte
+# (voir docker-compose.yml, OLLAMA_HOST=http://host.docker.internal:11434) —
+# le GPU de l'hôte n'est pas facilement accessible depuis un conteneur Windows.
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# Bibliothèques système requises par docling (extraction PDF/DOCX) et Pillow.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgl1 \
+    libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt requirements-api.txt ./
+RUN pip install --no-cache-dir -r requirements.txt -r requirements-api.txt
+
+COPY agents/ ./agents/
+COPY api/ ./api/
+COPY common/ ./common/
+COPY evaluation/ ./evaluation/
+COPY extraction/ ./extraction/
+COPY orchestration/ ./orchestration/
+COPY reporting/ ./reporting/
+COPY prompts/ ./prompts/
+COPY schemas/ ./schemas/
+COPY config.py ./
+
+# data/, results/, reports/ : montés en volumes (docker-compose.yml), jamais
+# copiés dans l'image — ce sont les résultats de l'utilisateur, pas du code.
+
+EXPOSE 8000
+CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]

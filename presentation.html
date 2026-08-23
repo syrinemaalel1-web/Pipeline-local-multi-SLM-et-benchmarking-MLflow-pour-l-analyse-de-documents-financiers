@@ -1,0 +1,949 @@
+<title>Benchmark SLM Finance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* ---------------------------------------------------------------- */
+  /* Tokens                                                            */
+  /* ---------------------------------------------------------------- */
+  :root {
+    --bg: #EEF0EA;
+    --surface: #FCFCF9;
+    --surface-raised: #FFFFFF;
+    --ink: #1A2320;
+    --ink-soft: #55625B;
+    --ink-faint: #8A968E;
+    --line: #D7DCD1;
+    --line-strong: #B7C0B2;
+
+    --accent: #1F6F60;
+    --accent-strong: #164F44;
+    --accent-soft: #DBEBE5;
+    --accent-2: #B4691E;
+    --accent-2-soft: #F3E1CB;
+
+    --shadow: 0 1px 2px rgba(20, 30, 25, 0.04), 0 8px 24px rgba(20, 30, 25, 0.06);
+
+    --font-display: "Fraunces", "Iowan Old Style", "Palatino Linotype", serif;
+    --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+    --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12181A;
+      --surface: #1A2224;
+      --surface-raised: #202A2C;
+      --ink: #E9EEE9;
+      --ink-soft: #A6B4AC;
+      --ink-faint: #6E7C74;
+      --line: #2B3634;
+      --line-strong: #3C4A46;
+
+      --accent: #56C7AC;
+      --accent-strong: #7FDBC2;
+      --accent-soft: rgba(86, 199, 172, 0.14);
+      --accent-2: #E7A75C;
+      --accent-2-soft: rgba(231, 167, 92, 0.14);
+
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.35);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #12181A;
+    --surface: #1A2224;
+    --surface-raised: #202A2C;
+    --ink: #E9EEE9;
+    --ink-soft: #A6B4AC;
+    --ink-faint: #6E7C74;
+    --line: #2B3634;
+    --line-strong: #3C4A46;
+
+    --accent: #56C7AC;
+    --accent-strong: #7FDBC2;
+    --accent-soft: rgba(86, 199, 172, 0.14);
+    --accent-2: #E7A75C;
+    --accent-2-soft: rgba(231, 167, 92, 0.14);
+
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.35);
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Base                                                              */
+  /* ---------------------------------------------------------------- */
+  * { box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    overscroll-behavior: none;
+  }
+
+  body {
+    overflow: hidden;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    margin: 0;
+    color: var(--ink);
+  }
+
+  p { margin: 0; line-height: 1.6; }
+
+  .mono {
+    font-family: var(--font-mono);
+    font-size: 0.92em;
+  }
+
+  ::selection { background: var(--accent-soft); color: var(--accent-strong); }
+
+  /* ---------------------------------------------------------------- */
+  /* Deck mechanics                                                    */
+  /* ---------------------------------------------------------------- */
+  #deck {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: clamp(2rem, 5vw, 5rem) clamp(1.5rem, 8vw, 8rem);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(14px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .slide.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .slide { transition: opacity 0.15s linear; transform: none; }
+  }
+
+  .slide-inner {
+    width: 100%;
+    max-width: 78rem;
+    margin: 0 auto;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .eyebrow::before {
+    content: "";
+    width: 1.4rem;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Navigation chrome                                                 */
+  /* ---------------------------------------------------------------- */
+  #progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: var(--accent);
+    width: 0%;
+    transition: width 0.4s ease;
+    z-index: 20;
+  }
+
+  #nav {
+    position: fixed;
+    bottom: clamp(1.2rem, 3vh, 2.2rem);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 0.9rem;
+    background: var(--surface-raised);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    box-shadow: var(--shadow);
+    z-index: 20;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+  }
+
+  .nav-btn {
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+  }
+  .nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .nav-btn:active { transform: scale(0.94); }
+  .nav-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .nav-btn[disabled] { opacity: 0.35; cursor: default; }
+  .nav-btn[disabled]:hover { border-color: var(--line); color: var(--ink); }
+
+  #counter { min-width: 3.4rem; text-align: center; font-variant-numeric: tabular-nums; }
+
+  .corner-mark {
+    position: fixed;
+    top: clamp(1.2rem, 3vh, 2rem);
+    right: clamp(1.2rem, 4vw, 3rem);
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+    z-index: 20;
+    text-align: right;
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Slide 1 — Title                                                   */
+  /* ---------------------------------------------------------------- */
+  .title-slide h1 {
+    font-size: clamp(2.4rem, 5.4vw, 4.6rem);
+    line-height: 1.04;
+  }
+  .title-sub {
+    margin-top: 1.4rem;
+    font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+    color: var(--ink-soft);
+    max-width: 42rem;
+    line-height: 1.6;
+  }
+  .title-meta {
+    margin-top: 2.8rem;
+    display: flex;
+    gap: 2.4rem;
+    flex-wrap: wrap;
+  }
+  .title-meta div {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--ink-faint);
+  }
+  .title-meta strong {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 0.98rem;
+    color: var(--ink);
+    font-weight: 600;
+    margin-top: 0.2rem;
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Generic slide furniture                                           */
+  /* ---------------------------------------------------------------- */
+  .slide h2 {
+    font-size: clamp(1.9rem, 3.4vw, 2.8rem);
+    margin-bottom: 0.4rem;
+  }
+  .slide-lede {
+    font-size: clamp(1rem, 1.3vw, 1.15rem);
+    color: var(--ink-soft);
+    max-width: 46rem;
+    margin-bottom: clamp(1.6rem, 3vh, 2.6rem);
+  }
+
+  .quote-block {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.6vw, 2.15rem);
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--ink);
+    border-left: 3px solid var(--accent);
+    padding-left: 1.6rem;
+    max-width: 50rem;
+  }
+  .quote-block em { color: var(--accent-strong); font-style: normal; }
+
+  /* Contrast columns (slide 2) */
+  .contrast {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.4rem;
+    margin-top: clamp(1.8rem, 4vh, 2.8rem);
+    width: 100%;
+  }
+  .contrast-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 1.6rem 1.8rem;
+  }
+  .contrast-card h3 {
+    font-size: 1.05rem;
+    font-family: var(--font-body);
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  .contrast-card ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.65rem; }
+  .contrast-card li { display: flex; gap: 0.6rem; font-size: 0.94rem; color: var(--ink-soft); line-height: 1.5; }
+  .mark-good { color: var(--accent); font-weight: 700; }
+  .mark-bad { color: var(--accent-2); font-weight: 700; }
+  .mark-q { color: var(--ink-faint); font-weight: 700; }
+
+  /* Flow / pipeline timeline (slide 3) */
+  .flow { display: grid; gap: 0; width: 100%; }
+  .flow-step {
+    display: grid;
+    grid-template-columns: 2.6rem 1fr;
+    gap: 1.2rem;
+    position: relative;
+  }
+  .flow-rail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .flow-dot {
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+    border: 1px solid var(--line-strong);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 0.92rem;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+  .flow-line {
+    width: 1px;
+    flex: 1;
+    background: var(--line-strong);
+    margin: 0.2rem 0;
+  }
+  .flow-content { padding-bottom: 1.6rem; }
+  .flow-content h3 {
+    font-family: var(--font-body);
+    font-size: 1.08rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+  .flow-content p { color: var(--ink-soft); font-size: 0.92rem; max-width: 44rem; }
+
+  .fork {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 0.9rem;
+  }
+  .fork-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+  }
+  .fork-card strong { display: block; font-size: 0.88rem; margin-bottom: 0.2rem; }
+  .fork-card span { font-size: 0.82rem; color: var(--ink-soft); font-family: var(--font-mono); }
+
+  /* Task grid (slide 4) */
+  .task-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    width: 100%;
+  }
+  .task-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 1.3rem 1.2rem;
+  }
+  .task-card .num {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+  .task-card h3 {
+    font-family: var(--font-body);
+    font-size: 1.02rem;
+    font-weight: 700;
+    margin: 0.4rem 0 0.5rem;
+  }
+  .task-card p { font-size: 0.84rem; color: var(--ink-soft); line-height: 1.5; }
+
+  .stat-row {
+    display: flex;
+    gap: clamp(1.6rem, 4vw, 3.4rem);
+    margin-top: clamp(1.6rem, 4vh, 2.6rem);
+    flex-wrap: wrap;
+  }
+  .stat-row .stat-num {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.4vw, 2.8rem);
+    font-weight: 600;
+    color: var(--accent-strong);
+    line-height: 1;
+  }
+  .stat-row .stat-label {
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+    margin-top: 0.4rem;
+    max-width: 12rem;
+    line-height: 1.4;
+  }
+
+  /* Two-pipeline slide (slide 5) */
+  .pipelines {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.4rem;
+    width: 100%;
+  }
+  .pipeline-card {
+    border-radius: 16px;
+    padding: 1.6rem 1.7rem;
+    border: 1px solid var(--line);
+  }
+  .pipeline-card.judge {
+    background: var(--accent-soft);
+    border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
+  }
+  .pipeline-card.metrics {
+    background: var(--accent-2-soft);
+    border-color: color-mix(in srgb, var(--accent-2) 30%, var(--line));
+  }
+  .pipeline-tag {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .pipeline-card.judge .pipeline-tag { color: var(--accent-strong); }
+  .pipeline-card.metrics .pipeline-tag { color: var(--accent-2); }
+  .pipeline-card h3 {
+    font-family: var(--font-body);
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0.35rem 0 0.9rem;
+  }
+  .pipeline-card ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.55rem; }
+  .pipeline-card li { font-size: 0.88rem; color: var(--ink); line-height: 1.5; }
+  .pipeline-card li b { font-weight: 700; }
+
+  .cross-note {
+    margin-top: 1.4rem;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    max-width: 50rem;
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+  }
+  .cross-note::before {
+    content: "↕";
+    font-family: var(--font-mono);
+    color: var(--accent);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* Judge validation slide (slide 6) */
+  .big-stat-band {
+    display: flex;
+    align-items: baseline;
+    gap: 1.4rem;
+    margin: 1.6rem 0 2rem;
+    flex-wrap: wrap;
+  }
+  .big-stat-band .frac {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    color: var(--ink-faint);
+  }
+  .big-stat-band .arrow {
+    font-family: var(--font-mono);
+    font-size: 1.6rem;
+    color: var(--ink-faint);
+  }
+  .big-stat-band .frac.after { color: var(--accent-strong); }
+  .big-stat-band .spec {
+    align-self: center;
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+  }
+
+  .protocol-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.9rem;
+    width: 100%;
+  }
+  .protocol-steps li {
+    list-style: none;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 1rem 1.1rem;
+    font-size: 0.84rem;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .protocol-steps .step-num {
+    font-family: var(--font-mono);
+    color: var(--accent);
+    font-size: 0.78rem;
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+
+  /* Report table (slide 7) */
+  .report-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 0.86rem;
+  }
+  .report-table th, .report-table td {
+    padding: 0.65rem 0.9rem;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+  }
+  .report-table th {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-faint);
+    background: var(--surface-raised);
+  }
+  .report-table td.model { font-family: var(--font-mono); }
+  .report-table tr:last-child td { border-bottom: none; }
+  .report-table tr.win { background: var(--accent-soft); }
+  .report-table tr.win td.model::after {
+    content: " ✓ recommandé";
+    color: var(--accent-strong);
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+  }
+  .report-table td.score { font-variant-numeric: tabular-nums; font-weight: 600; }
+
+  .report-notes { margin-top: 1.2rem; display: grid; gap: 0.5rem; }
+  .report-notes p { font-size: 0.86rem; color: var(--ink-soft); }
+  .report-notes p b { color: var(--ink); }
+
+  /* Deployment slide (slide 8) */
+  .deploy-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.4rem;
+    width: 100%;
+  }
+  .deploy-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 1.5rem 1.6rem;
+  }
+  .deploy-card h3 {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.7rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .deploy-card p { font-size: 0.88rem; color: var(--ink-soft); line-height: 1.55; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    padding: 0.28rem 0.6rem;
+    border-radius: 6px;
+    background: var(--surface-raised);
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+  }
+
+  /* Closing slide */
+  .closing-list { display: grid; gap: 1rem; width: 100%; margin-top: 0.6rem; }
+  .closing-item {
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    gap: 1rem;
+    align-items: start;
+  }
+  .closing-item .mark {
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+  .closing-item p { font-size: 0.98rem; color: var(--ink); }
+  .closing-item b { color: var(--accent-strong); }
+
+  /* ---------------------------------------------------------------- */
+  /* Responsive collapse for narrower windows                          */
+  /* ---------------------------------------------------------------- */
+  @media (max-width: 900px) {
+    body { overflow-y: auto; }
+    .slide { position: relative; min-height: 100vh; }
+    .contrast, .pipelines, .deploy-grid, .fork { grid-template-columns: 1fr; }
+    .task-grid { grid-template-columns: repeat(2, 1fr); }
+    .protocol-steps { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+
+<div id="progress"></div>
+<div class="corner-mark">Benchmark SLM<br>Analyse financière</div>
+
+<div id="deck">
+
+  <section class="slide title-slide">
+    <div class="slide-inner">
+      <div class="eyebrow">Stage d'ingénieure IA · 2 mois</div>
+      <h1>Comparer des modèles<br>de langage légers<br>pour l'analyse financière</h1>
+      <p class="title-sub">
+        Un pipeline complet, une méthodologie d'évaluation à deux voies, et une
+        application déployée — pour répondre à une question simple : des SLM
+        locaux peuvent-ils remplacer un grand modèle cloud sur des documents
+        financiers ?
+      </p>
+      <div class="title-meta">
+        <div>Modèles testés<strong>8</strong></div>
+        <div>Tâches<strong>4</strong></div>
+        <div>Langues<strong>FR · EN · AR</strong></div>
+        <div>Exécution<strong>100 % locale</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="eyebrow">Le problème</div>
+      <h2>Pourquoi ne pas juste utiliser GPT-4 ?</h2>
+      <p class="slide-lede">
+        Les grands modèles cloud donnent d'excellents résultats — mais un document
+        de financement bancaire n'est pas censé quitter l'entreprise.
+      </p>
+      <div class="quote-block">
+        Peut-on obtenir une qualité suffisante avec des modèles <em>légers (7-8B)</em>,
+        exécutés <em>100 % en local</em>, sans jamais envoyer un document à un
+        service externe&nbsp;?
+      </div>
+      <div class="contrast">
+        <div class="contrast-card">
+          <h3>Grand modèle cloud</h3>
+          <ul>
+            <li><span class="mark-good">✓</span> Qualité déjà éprouvée</li>
+            <li><span class="mark-bad">✗</span> Document envoyé à un tiers</li>
+            <li><span class="mark-bad">✗</span> Coût par appel, à l'échelle</li>
+          </ul>
+        </div>
+        <div class="contrast-card">
+          <h3>SLM local (ce projet)</h3>
+          <ul>
+            <li><span class="mark-good">✓</span> Rien ne quitte la machine</li>
+            <li><span class="mark-good">✓</span> Coût d'inférence marginal</li>
+            <li><span class="mark-q">?</span> Qualité — à démontrer rigoureusement</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="eyebrow">Vue d'ensemble</div>
+      <h2>Le pipeline, de bout en bout</h2>
+      <p class="slide-lede">
+        Chaque étape écrit son résultat sur disque avant de passer à la suivante —
+        rien n'est jamais recalculé pour rien.
+      </p>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-rail"><div class="flow-dot">1</div><div class="flow-line"></div></div>
+          <div class="flow-content">
+            <h3>Ingestion — Docling</h3>
+            <p>Extraction du texte et des tableaux (PDF / DOCX), détection de la langue, estimation du budget de tokens.</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-rail"><div class="flow-dot">2</div><div class="flow-line"></div></div>
+          <div class="flow-content">
+            <h3>Génération — 4 agents × N modèles</h3>
+            <p>Extraction, résumé, traduction, question-réponse — via Ollama, en local, sur chaque modèle candidat.</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-rail"><div class="flow-dot">3</div><div class="flow-line"></div></div>
+          <div class="flow-content">
+            <h3>Évaluation — deux pipelines indépendants</h3>
+            <p>Un juge LLM + scorers déterministes d'un côté, une méthode de référence indépendante de l'autre.</p>
+            <div class="fork">
+              <div class="fork-card"><strong>Pipeline A</strong><span>Judge</span></div>
+              <div class="fork-card"><strong>Pipeline B</strong><span>Metrics</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-rail"><div class="flow-dot">4</div></div>
+          <div class="flow-content">
+            <h3>Rapport comparatif + application web</h3>
+            <p>Tableaux de score, modèle recommandé, sortie réelle à l'appui — consultable dans un navigateur.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="eyebrow">Étape 2 — Génération</div>
+      <h2>4 agents, testés sur 8 modèles candidats</h2>
+      <p class="slide-lede">
+        Boucle modèle-majeure (un modèle chargé une fois, réutilisé sur tous les
+        documents) — pipeline repris automatiquement après toute interruption.
+      </p>
+      <div class="task-grid">
+        <div class="task-card">
+          <span class="num">01</span>
+          <h3>Extraction</h3>
+          <p>Structuration en JSON — client, montant, devise, taux, durée, clauses clés.</p>
+        </div>
+        <div class="task-card">
+          <span class="num">02</span>
+          <h3>Résumé</h3>
+          <p>Synthèse exécutive du document, fidèle aux faits chiffrés déterminants.</p>
+        </div>
+        <div class="task-card">
+          <span class="num">03</span>
+          <h3>Traduction</h3>
+          <p>FR ↔ EN ↔ AR selon la langue source, sans omission ni contresens.</p>
+        </div>
+        <div class="task-card">
+          <span class="num">04</span>
+          <h3>Question-réponse</h3>
+          <p>4 questions par document — dont une attend une abstention correcte.</p>
+        </div>
+      </div>
+      <div class="stat-row">
+        <div><div class="stat-num">12–20 h</div><div class="stat-label">par campagne complète d'inférence</div></div>
+        <div><div class="stat-num">4 Go</div><div class="stat-label">VRAM disponible — offload CPU partiel</div></div>
+        <div><div class="stat-num">0</div><div class="stat-label">inférence perdue après une interruption</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="eyebrow">Étape 3 — Évaluation</div>
+      <h2>Deux méthodes indépendantes, jamais fusionnées</h2>
+      <p class="slide-lede">
+        Sans vérité terrain, un jugement de qualité obtenu par une seule méthode est
+        un jugement non vérifié.
+      </p>
+      <div class="pipelines">
+        <div class="pipeline-card judge">
+          <span class="pipeline-tag">Pipeline A</span>
+          <h3>Judge</h3>
+          <ul>
+            <li><b>Scorers déterministes</b> — JSON valide, langue, longueur, chiffres préservés, abstention correcte.</li>
+            <li><b>Juge LLM sur mesure</b> — construit sa propre référence avant de lire la sortie évaluée.</li>
+            <li><b>Décodage JSON contraint</b> — la note ne peut structurellement pas sortir du barème.</li>
+            <li><b>Composite</b> — 60 % juge + 40 % scorers.</li>
+          </ul>
+        </div>
+        <div class="pipeline-card metrics">
+          <span class="pipeline-tag">Pipeline B</span>
+          <h3>Metrics</h3>
+          <ul>
+            <li><b>Faithfulness / Answer relevance</b> — un second juge indépendant, sa propre mécanique de décodage.</li>
+            <li><b>ARI / Flesch-Kincaid</b> — lisibilité, purement calculatoire, aucun appel LLM.</li>
+            <li><b>Exécution séparée</b> — jamais fusionnée avec le pipeline Judge.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="cross-note">
+        Faire tourner deux méthodologies indépendantes permet de repérer les cas où
+        elles divergent — un signal qu'aucune des deux, utilisée seule, n'aurait révélé.
+      </p>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="eyebrow">Fiabilité du juge</div>
+      <h2>Un juge testé comme un système à casser</h2>
+      <p class="slide-lede">
+        Avant de lui faire confiance, des fautes connues ont été injectées dans de
+        vraies sorties déjà correctes — pour vérifier que le juge les détecte.
+      </p>
+      <div class="big-stat-band">
+        <span class="frac">1 / 5</span>
+        <span class="arrow">→</span>
+        <span class="frac after">3 / 5</span>
+        <span class="spec">spécificité 4/4 — aucun faux positif</span>
+      </div>
+      <ol class="protocol-steps">
+        <li><span class="step-num">01</span>Le juge construit sa propre référence à partir du document, avant de lire la sortie.</li>
+        <li><span class="step-num">02</span>Il compare ensuite référence et sortie, écart par écart — jamais une note « au feeling ».</li>
+        <li><span class="step-num">03</span>Les justifications de forme (« bien présenté ») sont explicitement irrecevables.</li>
+        <li><span class="step-num">04</span>Le contrôle est rejoué après chaque itération du prompt — gain mesuré par du code.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="eyebrow">Étape 4 — Rapport</div>
+      <h2>Une recommandation, jamais un chiffre isolé</h2>
+      <p class="slide-lede">Exemple réel — tâche d'extraction, un document du corpus.</p>
+      <table class="report-table">
+        <thead>
+          <tr><th>Modèle</th><th>Note juge</th><th>Scorers code</th><th>Composite</th></tr>
+        </thead>
+        <tbody>
+          <tr class="win"><td class="model">llama3.1:8b</td><td class="score">4.33</td><td class="score">1.00</td><td class="score">0.91</td></tr>
+          <tr><td class="model">aya-expanse:8b</td><td class="score">4.67</td><td class="score">0.88</td><td class="score">0.74</td></tr>
+          <tr><td class="model">mistral:7b</td><td class="score">3.75</td><td class="score">1.00</td><td class="score">0.50</td></tr>
+          <tr><td class="model">qwen2.5:7b</td><td class="score">3.00</td><td class="score">1.00</td><td class="score">0.29</td></tr>
+        </tbody>
+      </table>
+      <div class="report-notes">
+        <p><b>Preuve concrète</b> — la sortie réelle du modèle recommandé accompagne toujours sa note.</p>
+        <p><b>Réserves de comparabilité</b> — un modèle spécialisé plus petit, ou sous le seuil minimal de fiabilité de format, est signalé et exclu de la recommandation.</p>
+        <p><b>Dashboard agrégé</b> — la même vue, tous documents confondus, pour dégager une tendance par tâche.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="eyebrow">De l'expérimentation au produit</div>
+      <h2>Application web déployée en conteneurs</h2>
+      <div class="deploy-grid">
+        <div class="deploy-card">
+          <h3>🖥️ Application web</h3>
+          <p>Dépôt de document par glisser-déposer, suivi de progression réel (0 → 100 %, sur le nombre d'unités de travail effectivement traitées), dashboard comparatif, rapport consultable dans le navigateur.</p>
+          <div class="tag-row"><span class="tag">React + Vite</span><span class="tag">FastAPI</span></div>
+        </div>
+        <div class="deploy-card">
+          <h3>🐳 Docker</h3>
+          <p>2 conteneurs orchestrés par Docker Compose (backend, frontend). Ollama reste sur la machine hôte pour l'accès direct au GPU. Données montées en volumes, persistantes.</p>
+          <div class="tag-row"><span class="tag">Docker</span><span class="tag">Docker Compose</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="eyebrow">En résumé</div>
+      <h2>Ce qui fait la valeur de ce projet</h2>
+      <div class="closing-list">
+        <div class="closing-item"><span class="mark">→</span><p><b>Zéro dépendance cloud</b> — traitement 100 % local, adapté à des documents financiers confidentiels.</p></div>
+        <div class="closing-item"><span class="mark">→</span><p><b>Méthodologie d'évaluation double et croisée</b>, pas un score unique aveugle.</p></div>
+        <div class="closing-item"><span class="mark">→</span><p><b>Un juge conçu et testé comme un système à casser</b>, pas seulement à faire confiance.</p></div>
+        <div class="closing-item"><span class="mark">→</span><p><b>Pipeline résilient</b> — reprise automatique, aucune inférence perdue sur des campagnes de plusieurs heures.</p></div>
+        <div class="closing-item"><span class="mark">→</span><p><b>De la ligne de commande à l'application déployée</b> — un projet complet, pas un notebook isolé.</p></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div id="nav">
+  <button class="nav-btn" id="prevBtn" aria-label="Diapositive précédente">←</button>
+  <span id="counter">01 / 09</span>
+  <button class="nav-btn" id="nextBtn" aria-label="Diapositive suivante">→</button>
+</div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let current = 0;
+
+  const counter = document.getElementById('counter');
+  const progress = document.getElementById('progress');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function render() {
+    slides.forEach((s, i) => s.classList.toggle('active', i === current));
+    counter.textContent = pad(current + 1) + ' / ' + pad(total);
+    progress.style.width = ((current + 1) / total * 100) + '%';
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total - 1;
+  }
+
+  function go(delta) {
+    const next = current + delta;
+    if (next < 0 || next >= total) return;
+    current = next;
+    render();
+  }
+
+  prevBtn.addEventListener('click', () => go(-1));
+  nextBtn.addEventListener('click', () => go(1));
+
+  window.addEventListener('keydown', (e) => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); go(1); }
+    else if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); go(-1); }
+    else if (e.key === 'Home') { current = 0; render(); }
+    else if (e.key === 'End') { current = total - 1; render(); }
+  });
+
+  let touchStartX = null;
+  window.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
+  window.addEventListener('touchend', (e) => {
+    if (touchStartX === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
+    touchStartX = null;
+  }, { passive: true });
+
+  render();
+</script>

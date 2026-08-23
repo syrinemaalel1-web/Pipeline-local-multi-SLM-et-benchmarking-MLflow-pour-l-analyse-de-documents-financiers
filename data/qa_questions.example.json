@@ -1,0 +1,26 @@
+[
+  {
+    "id": "q_montant",
+    "document_id": "REMPLACER_PAR_UN_document_id_DE_data_processed",
+    "question": "Quel est le montant total du financement proposé, et dans quelle devise ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_duree_taux",
+    "document_id": "REMPLACER_PAR_UN_document_id_DE_data_processed",
+    "question": "Sur quelle durée s'étale le financement et à quel taux ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_garanties",
+    "document_id": "REMPLACER_PAR_UN_document_id_DE_data_processed",
+    "question": "Quelles garanties sont exigées du client ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_absente",
+    "document_id": "REMPLACER_PAR_UN_document_id_DE_data_processed",
+    "question": "Quel est le numéro de compte bancaire international (IBAN) du bénéficiaire ?",
+    "expect_abstention": true
+  }
+]

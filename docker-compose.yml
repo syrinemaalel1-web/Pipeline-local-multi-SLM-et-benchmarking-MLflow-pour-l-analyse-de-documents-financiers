@@ -1,0 +1,33 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "8000:8000"
+    environment:
+      # Ollama reste sur l'hôte (voir Dockerfile.backend) — host.docker.internal
+      # est l'adresse spéciale par laquelle un conteneur joint sa machine hôte.
+      - OLLAMA_HOST=http://host.docker.internal:11434
+    extra_hosts:
+      # Nécessaire sur certaines configurations Linux ; sans effet sur Docker
+      # Desktop (Windows/Mac), où c'est déjà automatique — gardé pour que ce
+      # fichier reste portable.
+      - "host.docker.internal:host-gateway"
+    volumes:
+      # Montages directs (pas des volumes Docker nommés) : les résultats
+      # restent des fichiers normaux sur le disque, consultables et modifiables
+      # hors conteneur exactement comme avant (ex. data/qa_questions.json).
+      - ./data:/app/data
+      - ./results:/app/results
+      - ./reports:/app/reports
+      - ./mlruns:/app/mlruns
+      - ./mlflow.db:/app/mlflow.db
+
+  frontend:
+    build:
+      context: ./web
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend

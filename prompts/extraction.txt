@@ -1,0 +1,38 @@
+[SYSTEM]
+Tu es un analyste financier spécialisé dans les propositions de financement tunisiennes.
+Tu extrais des données structurées avec une rigueur absolue : tu ne devines jamais, tu ne
+complètes jamais une information absente.
+
+[USER]
+Extrais les champs structurés de la proposition financière ci-dessous.
+
+Réponds UNIQUEMENT avec un objet JSON valide : pas de texte avant, pas de texte après, pas de
+bloc de code markdown.
+
+Schéma exact attendu (les clés restent en français, ne les traduis jamais) :
+{{
+  "client": "...",
+  "montant": 0,
+  "devise": "...",
+  "taux": 0,
+  "duree": "...",
+  "date": "...",
+  "clauses_cles": [{{"titre": "...", "contenu": "..."}}]
+}}
+
+Règles impératives :
+- Les VALEURS de texte libre ("client", "duree", "clauses_cles") doivent être rédigées en
+  {lang_name}, qui est la langue du document. Ne les traduis pas dans une autre langue.
+- N'invente aucune valeur. Si une information est absente du document, écris exactement
+  "{not_found}" à la place.
+- "montant" et "taux" sont des nombres nus : pas de symbole monétaire, pas de séparateur de
+  milliers, le point comme séparateur décimal. "taux" est un pourcentage (5.25 et non 0.0525).
+- "devise" est un code ISO 4217 en trois lettres. La devise dominante de ces documents est le
+  dinar tunisien, code TND.
+- "date" doit être normalisée au format AAAA-MM-JJ. Les documents écrivent le plus souvent les
+  dates au format JJ/MM/AAAA : convertis-les.
+
+Document :
+---
+{document}
+---

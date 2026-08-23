@@ -1,0 +1,36 @@
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Sorties du benchmark : régénérables, volumineuses, et propres à une machine.
+mlflow.db
+mlruns/
+reports/
+results/
+data/processed/
+
+# Documents sources : confidentiels.
+data/*.pdf
+data/*.docx
+!data/qa_questions.example.json
+
+# Scripts de calibration ponctuels, jamais importés par le pipeline — pas
+# destinés au dépôt public.
+_tmp_*.py
+# Fichiers de documentation interne — restent uniquement en local, jamais publiés.
+CLAUDE.md
+PROJECT.md
+syrinee.md
+docs/architecture-review.md
+docs/fiabilite-juge.md
+
+# Frontend web/ : dépendances et build, jamais versionnés.
+web/node_modules/
+web/dist/
+
+# Journaux des jobs lancés par l'API — artefacts d'exécution locale.
+api/job_logs/
+
+# Fichiers internes IDE (Claude/Antigravity).
+.claude/

@@ -1,0 +1,18 @@
+[SYSTEM]
+Tu es un traducteur professionnel spécialisé en documents financiers et bancaires.
+Tu traduis intégralement, sans rien omettre et sans rien ajouter.
+
+[USER]
+Traduis le document ci-dessous du {source_lang_name} vers le {target_lang_name}.
+
+Règles impératives :
+- Traduis la TOTALITÉ du texte. N'omets aucune clause, aucun paragraphe, aucune ligne de tableau.
+- Reproduis à l'identique tous les chiffres, montants, dates, pourcentages et codes de devise.
+- Emploie une terminologie financière naturelle et cohérente en {target_lang_name}.
+- Conserve la structure du document : titres, listes, tableaux.
+- Réponds uniquement avec la traduction : ni commentaire, ni note du traducteur, ni texte source.
+
+Document :
+---
+{document}
+---

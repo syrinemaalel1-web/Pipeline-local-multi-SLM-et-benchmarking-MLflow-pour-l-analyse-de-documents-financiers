@@ -1,0 +1,386 @@
+[
+  {
+    "id": "q_montant",
+    "document_id": "doc_8dcc7fc6",
+    "question": "Quel est le montant total du financement demandé, et dans quelle devise ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_duree_taux",
+    "document_id": "doc_8dcc7fc6",
+    "question": "Quelles sont les conditions financières du dossier — durée et taux d'intérêt d'un financement, taux de rentabilité (TRI) ou délai de retour sur investissement d'un projet, ou échéancier de paiement d'un contrat de service ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_destinataire",
+    "document_id": "doc_8dcc7fc6",
+    "question": "À quel établissement financier cette proposition est-elle adressée ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_iban_absent",
+    "document_id": "doc_8dcc7fc6",
+    "question": "Quel est le numéro IBAN du compte bancaire du bénéficiaire ?",
+    "expect_abstention": true
+  },
+  {
+    "id": "q_montant",
+    "document_id": "het_financial_proposal_4ab4243e",
+    "question": "Quel est le montant total du financement demandé, et dans quelle devise ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_duree_taux",
+    "document_id": "het_financial_proposal_4ab4243e",
+    "question": "Quelles sont les conditions financières du dossier — durée et taux d'intérêt d'un financement, taux de rentabilité (TRI) ou délai de retour sur investissement d'un projet, ou échéancier de paiement d'un contrat de service ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_destinataire",
+    "document_id": "het_financial_proposal_4ab4243e",
+    "question": "À quel établissement financier cette proposition est-elle adressée ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_iban_absent",
+    "document_id": "het_financial_proposal_4ab4243e",
+    "question": "Quel est le numéro IBAN du compte bancaire du bénéficiaire ?",
+    "expect_abstention": true
+  },
+  {
+    "id": "q_montant",
+    "document_id": "oliva_export_tunisie_financial_proposal_cf06af71",
+    "question": "Quel est le montant total du financement demandé, et dans quelle devise ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_duree_taux",
+    "document_id": "oliva_export_tunisie_financial_proposal_cf06af71",
+    "question": "Quelles sont les conditions financières du dossier — durée et taux d'intérêt d'un financement, taux de rentabilité (TRI) ou délai de retour sur investissement d'un projet, ou échéancier de paiement d'un contrat de service ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_destinataire",
+    "document_id": "oliva_export_tunisie_financial_proposal_cf06af71",
+    "question": "À quel établissement financier cette proposition est-elle adressée ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_iban_absent",
+    "document_id": "oliva_export_tunisie_financial_proposal_cf06af71",
+    "question": "Quel est le numéro IBAN du compte bancaire du bénéficiaire ?",
+    "expect_abstention": true
+  },
+  {
+    "id": "q_montant",
+    "document_id": "proposal_northbridge_logistics_en_5d39011d",
+    "question": "Quel est le montant total du financement demandé, et dans quelle devise ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_duree_taux",
+    "document_id": "proposal_northbridge_logistics_en_5d39011d",
+    "question": "Quelles sont les conditions financières du dossier — durée et taux d'intérêt d'un financement, taux de rentabilité (TRI) ou délai de retour sur investissement d'un projet, ou échéancier de paiement d'un contrat de service ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_destinataire",
+    "document_id": "proposal_northbridge_logistics_en_5d39011d",
+    "question": "À quel établissement financier cette proposition est-elle adressée ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_iban_absent",
+    "document_id": "proposal_northbridge_logistics_en_5d39011d",
+    "question": "Quel est le numéro IBAN du compte bancaire du bénéficiaire ?",
+    "expect_abstention": true
+  },
+  {
+    "id": "q_montant",
+    "document_id": "proposition_alpha_construction_ar_23f37ed2",
+    "question": "Quel est le montant total du financement demandé, et dans quelle devise ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_duree_taux",
+    "document_id": "proposition_alpha_construction_ar_23f37ed2",
+    "question": "Quelles sont les conditions financières du dossier — durée et taux d'intérêt d'un financement, taux de rentabilité (TRI) ou délai de retour sur investissement d'un projet, ou échéancier de paiement d'un contrat de service ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_destinataire",
+    "document_id": "proposition_alpha_construction_ar_23f37ed2",
+    "question": "À quel établissement financier cette proposition est-elle adressée ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_iban_absent",
+    "document_id": "proposition_alpha_construction_ar_23f37ed2",
+    "question": "Quel est le numéro IBAN du compte bancaire du bénéficiaire ?",
+    "expect_abstention": true
+  },
+  {
+    "id": "q_montant",
+    "document_id": "proposition_financement_atlas_agro_aa1f28b0",
+    "question": "Quel est le montant total du financement demandé, et dans quelle devise ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_duree_taux",
+    "document_id": "proposition_financement_atlas_agro_aa1f28b0",
+    "question": "Quelles sont les conditions financières du dossier — durée et taux d'intérêt d'un financement, taux de rentabilité (TRI) ou délai de retour sur investissement d'un projet, ou échéancier de paiement d'un contrat de service ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_destinataire",
+    "document_id": "proposition_financement_atlas_agro_aa1f28b0",
+    "question": "À quel établissement financier cette proposition est-elle adressée ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_iban_absent",
+    "document_id": "proposition_financement_atlas_agro_aa1f28b0",
+    "question": "Quel est le numéro IBAN du compte bancaire du bénéficiaire ?",
+    "expect_abstention": true
+  },
+  {
+    "id": "q_montant",
+    "document_id": "proposition_financiere_novatech_brdc_33f1c625",
+    "question": "Quel est le montant total du financement demandé, et dans quelle devise ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_duree_taux",
+    "document_id": "proposition_financiere_novatech_brdc_33f1c625",
+    "question": "Quelles sont les conditions financières du dossier — durée et taux d'intérêt d'un financement, taux de rentabilité (TRI) ou délai de retour sur investissement d'un projet, ou échéancier de paiement d'un contrat de service ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_destinataire",
+    "document_id": "proposition_financiere_novatech_brdc_33f1c625",
+    "question": "À quel établissement financier cette proposition est-elle adressée ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_iban_absent",
+    "document_id": "proposition_financiere_novatech_brdc_33f1c625",
+    "question": "Quel est le numéro IBAN du compte bancaire du bénéficiaire ?",
+    "expect_abstention": true
+  },
+  {
+    "id": "q_montant",
+    "document_id": "proposition_financiere_novatech_sogeda_9addc0ea",
+    "question": "Quel est le montant total du financement demandé, et dans quelle devise ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_duree_taux",
+    "document_id": "proposition_financiere_novatech_sogeda_9addc0ea",
+    "question": "Quelles sont les conditions financières du dossier — durée et taux d'intérêt d'un financement, taux de rentabilité (TRI) ou délai de retour sur investissement d'un projet, ou échéancier de paiement d'un contrat de service ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_destinataire",
+    "document_id": "proposition_financiere_novatech_sogeda_9addc0ea",
+    "question": "À quel établissement financier cette proposition est-elle adressée ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_iban_absent",
+    "document_id": "proposition_financiere_novatech_sogeda_9addc0ea",
+    "question": "Quel est le numéro IBAN du compte bancaire du bénéficiaire ?",
+    "expect_abstention": true
+  },
+  {
+    "id": "q_montant",
+    "document_id": "proposition_thalassa_hotellerie_fr_76fc04af",
+    "question": "Quel est le montant total du financement demandé, et dans quelle devise ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_duree_taux",
+    "document_id": "proposition_thalassa_hotellerie_fr_76fc04af",
+    "question": "Quelles sont les conditions financières du dossier — durée et taux d'intérêt d'un financement, taux de rentabilité (TRI) ou délai de retour sur investissement d'un projet, ou échéancier de paiement d'un contrat de service ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_destinataire",
+    "document_id": "proposition_thalassa_hotellerie_fr_76fc04af",
+    "question": "À quel établissement financier cette proposition est-elle adressée ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_iban_absent",
+    "document_id": "proposition_thalassa_hotellerie_fr_76fc04af",
+    "question": "Quel est le numéro IBAN du compte bancaire du bénéficiaire ?",
+    "expect_abstention": true
+  },
+  {
+    "id": "q_montant",
+    "document_id": "atlas_verre_industries_financial_proposal_a3668a45",
+    "question": "Quel est le montant total du financement demandé, et dans quelle devise ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_duree_taux",
+    "document_id": "atlas_verre_industries_financial_proposal_a3668a45",
+    "question": "Quelles sont les conditions financières du dossier — durée et taux d'intérêt d'un financement, taux de rentabilité (TRI) ou délai de retour sur investissement d'un projet, ou échéancier de paiement d'un contrat de service ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_destinataire",
+    "document_id": "atlas_verre_industries_financial_proposal_a3668a45",
+    "question": "À quel établissement financier cette proposition est-elle adressée ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_iban_absent",
+    "document_id": "atlas_verre_industries_financial_proposal_a3668a45",
+    "question": "Quel est le numéro IBAN du compte bancaire du bénéficiaire ?",
+    "expect_abstention": true
+  },
+  {
+    "id": "q_montant",
+    "document_id": "delta_aquaculture_financial_proposal_0f8e401b",
+    "question": "Quel est le montant total du financement demandé, et dans quelle devise ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_duree_taux",
+    "document_id": "delta_aquaculture_financial_proposal_0f8e401b",
+    "question": "Quelles sont les conditions financières du dossier — durée et taux d'intérêt d'un financement, taux de rentabilité (TRI) ou délai de retour sur investissement d'un projet, ou échéancier de paiement d'un contrat de service ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_destinataire",
+    "document_id": "delta_aquaculture_financial_proposal_0f8e401b",
+    "question": "À quel établissement financier cette proposition est-elle adressée ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_iban_absent",
+    "document_id": "delta_aquaculture_financial_proposal_0f8e401b",
+    "question": "Quel est le numéro IBAN du compte bancaire du bénéficiaire ?",
+    "expect_abstention": true
+  },
+  {
+    "id": "q_montant",
+    "document_id": "neapolis_agritech_financial_proposal_03fc654a",
+    "question": "Quel est le montant total du financement demandé, et dans quelle devise ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_duree_taux",
+    "document_id": "neapolis_agritech_financial_proposal_03fc654a",
+    "question": "Quelles sont les conditions financières du dossier — durée et taux d'intérêt d'un financement, taux de rentabilité (TRI) ou délai de retour sur investissement d'un projet, ou échéancier de paiement d'un contrat de service ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_destinataire",
+    "document_id": "neapolis_agritech_financial_proposal_03fc654a",
+    "question": "À quel établissement financier cette proposition est-elle adressée ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_iban_absent",
+    "document_id": "neapolis_agritech_financial_proposal_03fc654a",
+    "question": "Quel est le numéro IBAN du compte bancaire du bénéficiaire ?",
+    "expect_abstention": true
+  },
+  {
+    "id": "q_montant",
+    "document_id": "proposition_financiere_mct_sodigra_41bda4a6",
+    "question": "Quel est le montant total du financement demandé, et dans quelle devise ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_duree_taux",
+    "document_id": "proposition_financiere_mct_sodigra_41bda4a6",
+    "question": "Quelles sont les conditions financières du dossier — durée et taux d'intérêt d'un financement, taux de rentabilité (TRI) ou délai de retour sur investissement d'un projet, ou échéancier de paiement d'un contrat de service ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_destinataire",
+    "document_id": "proposition_financiere_mct_sodigra_41bda4a6",
+    "question": "À quel établissement financier cette proposition est-elle adressée ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_iban_absent",
+    "document_id": "proposition_financiere_mct_sodigra_41bda4a6",
+    "question": "Quel est le numéro IBAN du compte bancaire du bénéficiaire ?",
+    "expect_abstention": true
+  },
+  {
+    "id": "q_montant",
+    "document_id": "proposition_financiere_nexatech_sgd_c1bb056b",
+    "question": "Quel est le montant total du financement demandé, et dans quelle devise ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_duree_taux",
+    "document_id": "proposition_financiere_nexatech_sgd_c1bb056b",
+    "question": "Quelles sont les conditions financières du dossier — durée et taux d'intérêt d'un financement, taux de rentabilité (TRI) ou délai de retour sur investissement d'un projet, ou échéancier de paiement d'un contrat de service ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_destinataire",
+    "document_id": "proposition_financiere_nexatech_sgd_c1bb056b",
+    "question": "À quel établissement financier cette proposition est-elle adressée ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_iban_absent",
+    "document_id": "proposition_financiere_nexatech_sgd_c1bb056b",
+    "question": "Quel est le numéro IBAN du compte bancaire du bénéficiaire ?",
+    "expect_abstention": true
+  },
+  {
+    "id": "q_montant",
+    "document_id": "proposition_financiere_solartech_64292e36",
+    "question": "Quel est le montant total du financement demandé, et dans quelle devise ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_duree_taux",
+    "document_id": "proposition_financiere_solartech_64292e36",
+    "question": "Quelles sont les conditions financières du dossier — durée et taux d'intérêt d'un financement, taux de rentabilité (TRI) ou délai de retour sur investissement d'un projet, ou échéancier de paiement d'un contrat de service ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_destinataire",
+    "document_id": "proposition_financiere_solartech_64292e36",
+    "question": "À quel établissement financier cette proposition est-elle adressée ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_iban_absent",
+    "document_id": "proposition_financiere_solartech_64292e36",
+    "question": "Quel est le numéro IBAN du compte bancaire du bénéficiaire ?",
+    "expect_abstention": true
+  },
+  {
+    "id": "q_montant",
+    "document_id": "proposition_financiere_solartech_sin_712ca8dc",
+    "question": "Quel est le montant total du financement demandé, et dans quelle devise ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_duree_taux",
+    "document_id": "proposition_financiere_solartech_sin_712ca8dc",
+    "question": "Quelles sont les conditions financières du dossier — durée et taux d'intérêt d'un financement, taux de rentabilité (TRI) ou délai de retour sur investissement d'un projet, ou échéancier de paiement d'un contrat de service ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_destinataire",
+    "document_id": "proposition_financiere_solartech_sin_712ca8dc",
+    "question": "À quel établissement financier cette proposition est-elle adressée ?",
+    "expect_abstention": false
+  },
+  {
+    "id": "q_iban_absent",
+    "document_id": "proposition_financiere_solartech_sin_712ca8dc",
+    "question": "Quel est le numéro IBAN du compte bancaire du bénéficiaire ?",
+    "expect_abstention": true
+  }
+]
