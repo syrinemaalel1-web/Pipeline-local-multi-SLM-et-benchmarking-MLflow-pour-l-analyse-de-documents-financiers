@@ -442,40 +442,6 @@ L'application est conteneurisée pour être reproductible sur n'importe quelle m
 
 ---
 
-## ⚠️ Limites connues du protocole
-
-À reprendre telles quelles dans toute lecture des résultats.
-
-**Le juge ne détecte que trois fautes de fond sur cinq.** `granite3.3:8b` en attrape 3 sur
-5 (contrôle négatif automatisé) et valide 4 sorties intactes sur 4. Il repère les valeurs
-inventées et les montants faussés ; lui échappent encore une conclusion ajoutée à un
-résumé et une traduction tronquée de moitié. Ses notes ne se lisent donc jamais sans les
-scorers déterministes. Détail dans [`docs/fiabilite-juge.md`](docs/fiabilite-juge.md).
-
-**Le juge coûte cher en temps.** `granite3.3:8b` met environ trois minutes par ligne — le
-prix d'un juge qui vérifie réellement, et il domine le budget de la phase d'évaluation.
-
-**L'axe mémoire discrimine peu.** Sur 4 Go de VRAM, tous les candidats de 7-8 B débordent
-de la même façon. Le rapport affiche donc aussi le débit en tokens par seconde et le
-pourcentage d'offload GPU, qui séparent réellement les modèles.
-
-**Deux candidats ne sont pas strictement comparables.** `translategemma` est un 4.3B
-spécialisé traduction face à des 7-8B généralistes, et `mannix/llamax3-8b-alpaca` est
-quantifié en Q4_0 quand les autres sont en Q4_K_M. Ces écarts sont repris automatiquement
-dans le rapport.
-
-**`deepseek-r1:8b` a une latence non comparable.** Modèle de raisonnement, il génère 3 à
-10 fois plus de tokens. Son bloc `<think>` est retiré avant évaluation, mais sa latence
-brute ne se compare pas à celle des autres candidats de la tâche Q&A.
-
-**Le décodage contraint est désactivé pour la génération.** Ollama sait forcer un schéma
-JSON, ce qui rendrait l'extraction presque toujours valide. Le benchmark s'en passe
-volontairement : produire du JSON propre en prompting libre fait partie de ce qu'on
-mesure. Pour un déploiement en production, activer le décodage contraint est en revanche
-recommandé (le juge, lui, l'utilise déjà — voir `evaluation/judges.py`).
-
----
-
 ## ✨ Points forts à retenir
 
 - **Zéro dépendance cloud** — traitement 100 % local, adapté à des documents financiers
